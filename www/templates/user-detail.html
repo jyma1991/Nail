@@ -1,0 +1,36 @@
+<ion-view hide-nav-bar="true">
+  <ion-header-bar align-title="left" class="bar-light">
+  <div class="h1 title">{{user.name}}</div>
+      <div class="buttons">
+          <button ng-if="user.mobile" class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-click="save()">
+          </button>
+          <button ng-if="!user.mobile" class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-click="add()">
+          </button>
+      </div>
+  </ion-header-bar>
+  <ion-content class="ionic-body active-preview">
+      <div class="list">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">姓名</span>
+        <input type="text" placeholder="莹莹" ng-model="user.name" required>
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">手机</span>
+        <input type="text" placeholder="15890198396" ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required ng-model="user.mobile">
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">生日</span>
+        <input type="text" placeholder="1992-01-02" ng-model="user.birthday">
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">余额</span>
+        <input type="text" placeholder=100  value={{user.balance-user.amount}}>
+        <input type="hidden" ng-model="user.balance">
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">扣除</span>
+        <input type="text" placeholder=0 ng-model="user.amount" value=0>
+      </label>
+      </div>
+  </ion-content>
+</ion-view>
