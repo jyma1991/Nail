@@ -1,36 +1,46 @@
 <ion-view hide-nav-bar="true">
   <ion-header-bar align-title="left" class="bar-light">
-  <div class="h1 title">{{user.name}}</div>
-      <div class="buttons">
-          <button ng-if="user.mobile" class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-click="save()">
+    <div class="h1 title">{{user.name}}</div>
+    <div class="buttons">
+      <button class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-click="save()">
           </button>
-          <button ng-if="!user.mobile" class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-click="add()">
-          </button>
-      </div>
+    </div>
   </ion-header-bar>
   <ion-content class="ionic-body active-preview">
-      <div class="list">
+    <div class="list">
       <label class="item item-input item-stacked-label">
         <span class="input-label">姓名</span>
-        <input type="text" placeholder="莹莹" ng-model="user.name" required>
+        <input type="text" placeholder="莹莹" ng-model="user.name">
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">手机</span>
-        <input type="text" placeholder="15890198396" ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required ng-model="user.mobile">
+        <input type="tel" placeholder="15890198396" ng-model="user.mobile">
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">生日</span>
-        <input type="text" placeholder="1992-01-02" ng-model="user.birthday">
+        <input type="date" ng-model="user.birthday" >
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">余额</span>
-        <input type="text" placeholder=100  value={{user.balance-user.amount}}>
-        <input type="hidden" ng-model="user.balance">
+        <input type="number" placeholder=100 ng-model="user.balance">
       </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">扣除</span>
-        <input type="text" placeholder=0 ng-model="user.amount" value=0>
+      <label ng-if="user.id!=-1" class="item item-input item-stacked-label">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            消费类型
+          </div>
+          <select>
+            <option value="1">充值</option>
+            <option value="0" selected>消费</option>
+          </select>
+        </label>
+        <!--<ion-list>
+          <ion-radio ng-model="user.inOut" ng-value="0">消费</ion-radio>
+          <ion-radio ng-model="user.inOut" ng-value="1">充值</ion-radio>
+        </ion-list>-->
+        <span class="input-label">金额</span>
+        <input type="number" placeholder=0 ng-model="user.amount" value=0>
       </label>
-      </div>
+    </div>
   </ion-content>
 </ion-view>

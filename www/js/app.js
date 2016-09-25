@@ -5,7 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+var model=angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngCordova'])
+
 
 //For All platform
 .config(function($ionicConfigProvider) {
@@ -14,6 +15,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
+
+
+    document.addEventListener('deviceready', function() {
+      window.sqlitePlugin.echoTest(function() {
+        //window.plugins.toast.show("OK", 'long', 'bottom')
+      });
+       var db = window.sqlitePlugin.openDatabase({name: 'nail.db', location: 'default'});
+       db.transaction(function(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Users ([id] INTEGER PRIMARY KEY NOT NULL,name,mobile,[birthday] DATE,[addDate] DATE,[editDate] DATE,[balance] INTEGER,extInfo)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Record ([id] INTEGER PRIMARY KEY NOT NULL,userId,name,mobile,[inDate] DATE,type,[amount] INTEGER ,ext1)');
+
+       });
+    });
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
