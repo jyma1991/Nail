@@ -1,23 +1,22 @@
 ##用户信息表
 =============
 
-id id
+id uid
 姓名 name
 手机号 mobile
 生日 birthday
 加入时间 addDate
 修改时间 editDate
 余额   balance
+头像 avatar
 extInfo 
 
 流水表
 ===========
-id id
+id rid
 用户 userId
-姓名 name
-手机号 mobile
 时间  inDate
-消费/充值  0/1 type
+消费/充值  0/1 inOut
 金额  amount
 ext1
 

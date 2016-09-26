@@ -12,11 +12,11 @@
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="user in users" type="item-text-wrap" href="#/tab/users/{{user.id}}">
         <img ng-src="img/{{user.id%94}}.jpg">
         <h2>{{user.name}}</h2>
-        <p>{{user.mobile}}</p>
+        <p>电话：{{user.mobile}}       余额：{{user.balance}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button class="button-assertive" ng-click="remove(user)">
-          Delete
+          删除
         </ion-option-button>
       </ion-item>
     </ion-list>

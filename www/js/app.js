@@ -8,7 +8,7 @@
 var model=angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngCordova'])
 
 
-//For All platform
+//Tab 导航位置为下面  默认手机在上面, web 在下面
 .config(function($ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom');
 })
@@ -23,8 +23,8 @@ var model=angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
       });
        var db = window.sqlitePlugin.openDatabase({name: 'nail.db', location: 'default'});
        db.transaction(function(tx) {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Users ([id] INTEGER PRIMARY KEY NOT NULL,name,mobile,[birthday] DATE,[addDate] DATE,[editDate] DATE,[balance] INTEGER,extInfo)');
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Record ([id] INTEGER PRIMARY KEY NOT NULL,userId,name,mobile,[inDate] DATE,type,[amount] INTEGER ,ext1)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Users ([uid] INTEGER PRIMARY KEY NOT NULL,name,mobile,[birthday] DATE,[addDate] DATE,[editDate] DATE,[balance] INTEGER,avatar,extInfo)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Record ([rid] INTEGER PRIMARY KEY NOT NULL,userId,[inDate] DATE,inOut,[amount] INTEGER ,ext1)');
 
        });
     });
