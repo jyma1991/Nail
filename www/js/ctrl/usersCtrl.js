@@ -19,7 +19,7 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
 
     // An elaborate, custom popup
     var myPopup = $ionicPopup.show({
-      template: '<input type="number" ng-model="user.amount" placeholder="可用金额:{{$scope.user.balance}}">',
+      template: '<input type="number" ng-model="user.amount" placeholder="可用金额:'+user.balance+'">',
       title: title,
       subTitle: '',
       scope: $scope,
