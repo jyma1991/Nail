@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var model=angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngCordova'])
 
 
 //Tab 导航位置为下面  默认手机在上面, web 在下面
@@ -103,3 +103,6 @@ var model=angular.module('starter', ['ionic', 'starter.controllers', 'starter.se
   $urlRouterProvider.otherwise('/tab/dash');
 
 });
+
+//多ctrl文件形式添加
+var controllersModel = angular.module('starter.controllers', []);

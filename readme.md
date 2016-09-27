@@ -48,3 +48,10 @@ That's it. Now sqlite is usable.
 cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
 
 
+## 问题 
+===============
+分离controller
+--------------------
+参考 https://forum.ionicframework.com/t/how-can-i-have-one-file-per-controller/1269/5
+
+

@@ -39,14 +39,15 @@ angular.module('starter.controllers', [])
 
     $scope.user = Users.get($stateParams.userId);
     
+    $scope.user = Users.get($stateParams.userId);
     if (!$scope.user) {
-        $scope.user = { id: -1 };
+        $scope.user = {
+            id: -1,
+            birthday: new Date()
+        };
     }
-
-    if($scope.user.birthday==null){
-        $scope.user.birthday = new Date();
-    }else{
-      $scope.user.birthday =$scope.user.birthday.toLocaleString();
+    if ($scope.user.birthday) {
+        $scope.user.birthday = $scope.user.birthday.toLocaleString();
     }
 
     $scope.save = function () {

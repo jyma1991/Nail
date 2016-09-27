@@ -3,7 +3,7 @@ var model = angular.module('starter.services', [])
   /********************************************************************************
    Users
    ********************************************************************************/
-  .factory('Users', function (toast) {
+  .factory('Users', function (toast,$cordovaSQLite) {
     // Might use a resource here that returns a JSON array
 
     var users = [];
@@ -91,7 +91,7 @@ var model = angular.module('starter.services', [])
 /********************************************************************************
  Dash
  ********************************************************************************/
-model.factory('dash', function (toast) {
+model.factory('dash', function (toast,$cordovaSQLite) {
   var records=[];
   return {
     all:  function () {

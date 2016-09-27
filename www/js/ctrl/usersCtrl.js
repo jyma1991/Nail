@@ -1,4 +1,4 @@
-angular.module('starter.controllers', []).controller('UsersCtrl', function ($scope, Users, $state) {
+controllersModel.controller('UsersCtrl', function ($scope, Users, $state) {
 
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
       // handle event
