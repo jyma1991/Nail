@@ -6,31 +6,43 @@ var model = angular.module('starter.services', [])
   .factory('Users', function (toast,$cordovaSQLite) {
     // Might use a resource here that returns a JSON array
 
-    var users = [];
+    var users = [{
+        id:999,
+        name:'臧莹',
+        mobile:'15890198396',
+        birthday:new Date(),
+        balance:1000
+    },{
+        id:998,
+        name:'jyma1991',
+        mobile:'15890198396',
+        birthday:new Date(),
+        balance:1000
+    }];
     return {
       all: function () {
-        users = [];
-        var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
+        // users = [];
+        // var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
 
-        db.transaction(function (tx) {
-          var query = "SELECT uid,name,mobile,birthday,addDate,editDate,balance,avatar FROM Users";
+        // db.transaction(function (tx) {
+        //   var query = "SELECT uid,name,mobile,birthday,addDate,editDate,balance,avatar FROM Users";
 
-          tx.executeSql(query, [], function (tx, resultSet) {
-            //toast.show("结果: " + resultSet.rows.length, 'long', 'bottom');
-            for (var x = 0; x < resultSet.rows.length; x++) {
-              var user = {};
-              user.id = resultSet.rows.item(x).uid;
-              user.name = resultSet.rows.item(x).name;
-              user.mobile = resultSet.rows.item(x).mobile;
-              user.birthday = resultSet.rows.item(x).birthday;
-              user.balance = resultSet.rows.item(x).balance;
-              user.avatar = resultSet.rows.item(x).avatar;
-              user.addDate=resultSet.rows.item(x).addDate;
-              user.editDate = resultSet.rows.item(x).editDate;
-              users.push(user);
-            }
-          });
-        });
+        //   tx.executeSql(query, [], function (tx, resultSet) {
+        //     //toast.show("结果: " + resultSet.rows.length, 'long', 'bottom');
+        //     for (var x = 0; x < resultSet.rows.length; x++) {
+        //       var user = {};
+        //       user.id = resultSet.rows.item(x).uid;
+        //       user.name = resultSet.rows.item(x).name;
+        //       user.mobile = resultSet.rows.item(x).mobile;
+        //       user.birthday = resultSet.rows.item(x).birthday;
+        //       user.balance = resultSet.rows.item(x).balance;
+        //       user.avatar = resultSet.rows.item(x).avatar;
+        //       user.addDate=resultSet.rows.item(x).addDate;
+        //       user.editDate = resultSet.rows.item(x).editDate;
+        //       users.push(user);
+        //     }
+        //   });
+        // });
         return users;
       },
 

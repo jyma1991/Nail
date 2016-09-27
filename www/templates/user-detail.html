@@ -1,5 +1,5 @@
 <ion-view hide-nav-bar="true">
-  <ion-header-bar align-title="left" class="bar-balanced">
+  <ion-header-bar align-title="left" class="bar-light">
     <div class="h1 title">{{user.name}}</div>
     <div class="buttons">
       <button class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-click="save()">
@@ -7,22 +7,23 @@
     </div>
   </ion-header-bar>
   <ion-content class="ionic-body active-preview">
-    <div class="list">
+    <form name='userInfo' class="list">
       <label class="item item-input item-stacked-label">
         <span class="input-label">姓名</span>
-        <input type="text" placeholder="莹莹" ng-model="user.name">
+        <input type="text" name='name' placeholder="莹莹" ng-model="user.name" ng-minlength="3" ng-maxlength="32" ng-required="true">
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">手机</span>
-        <input type="tel" placeholder="15890198396" ng-model="user.mobile">
+        <input type="tel" name='mobile' placeholder="15890198396" ng-model="user.mobile" ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" ng-required="true">
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">生日</span>
-        <input type="date" ng-model="user.birthday" >
+        <input type="date" name='birthday' ng-model="user.birthday" >
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">余额</span>
-        <input type="number" placeholder=100 ng-model="user.balance">
+        <input type="number" name='blance' placeholder=100 ng-model="user.balance-">
+        <input type="hidden" name='blance'
       </label>
       <label ng-if="user.id!=-1" class="item item-input item-stacked-label">
         <label class="item item-input item-select">
@@ -41,6 +42,6 @@
         <span class="input-label">金额</span>
         <input type="number" placeholder=0 ng-model="user.amount" value=0>
       </label>
-    </div>
+    </form>
   </ion-content>
 </ion-view>

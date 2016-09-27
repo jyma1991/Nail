@@ -7,9 +7,6 @@ controllersModel.controller('UserDetailCtrl', function ($scope, $stateParams, Us
             birthday: new Date()
         };
     }
-    if ($scope.user.birthday) {
-        $scope.user.birthday = $scope.user.birthday.toLocaleString();
-    }
 
     $scope.save = function () {
         console.log($scope.user);
