@@ -2,6 +2,6 @@ controllersModel.controller('DashCtrl',function ($scope,dash) {
 
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
       // handle event
-      $scope.records = dash.all();
+      $scope.status = dash.all();
     });
  });

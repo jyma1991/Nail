@@ -2,46 +2,45 @@
   <ion-header-bar align-title="left" class="bar-light">
     <div class="h1 title">{{user.name}}</div>
     <div class="buttons">
-      <button class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-click="save()">
-          </button>
+      <!--<button class="button no-animation button-icon icon ion-ios-cloud-upload-outline" ng-disabled="userInfo.$valid" ng-click="save(username.$valid)">
+          </button>-->
     </div>
   </ion-header-bar>
   <ion-content class="ionic-body active-preview">
     <form name='userInfo' class="list">
       <label class="item item-input item-stacked-label">
         <span class="input-label">姓名</span>
-        <input type="text" name='name' placeholder="莹莹" ng-model="user.name" ng-minlength="3" ng-maxlength="32" ng-required="true">
+        <input type="text" name='username' placeholder="莹莹" ng-model="user.name" ng-minlength="2" ng-maxlength="32" ng-required="true">
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">手机</span>
-        <input type="tel" name='mobile' placeholder="15890198396" ng-model="user.mobile" ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" ng-required="true">
+        <input type="tel" name='mobile' placeholder="15890198396" ng-model="user.mobile" ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" ng-required="true" requird>
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">生日</span>
         <input type="date" name='birthday' ng-model="user.birthday" >
       </label>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">余额</span>
-        <input type="number" name='blance' placeholder=100 ng-model="user.balance-">
-        <input type="hidden" name='blance'
+      <label ng-if="user.id==-1" class="item item-input item-stacked-label">
+        <span class="input-label">充值金额</span>
+        <input type="number" name='blance' placeholder=1000 ng-model="user.balance" ng-required="true" required>
       </label>
-      <label ng-if="user.id!=-1" class="item item-input item-stacked-label">
-        <label class="item item-input item-select">
-          <div class="input-label">
-            消费类型
-          </div>
-          <select ng-model="user.inOut">
-            <option value="1">充值</option>
-            <option value="0" selected>消费</option>
-          </select>
-        </label>
-        <!--<ion-list>
-          <ion-radio ng-model="user.inOut" ng-value="0">消费</ion-radio>
-          <ion-radio ng-model="user.inOut" ng-value="1">充值</ion-radio>
-        </ion-list>-->
-        <span class="input-label">金额</span>
-        <input type="number" placeholder=0 ng-model="user.amount" value=0>
-      </label>
+      <button type="button" class="button button-block button-positive" ng-disabled="userInfo.$invalid" ng-click="save()">保存</button>
     </form>
+
+    <div ng-if="user.id!=-1 && user.records && user.records.length>0 && user.sum" class="list card">
+      <div class="item item-divider">充值总计{{}}</div>
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-remove-animate item-avatar" ng-repeat="record in user.records" type="item-text-wrap"
+            href="#/tab/users/{{record.user.id}}">
+            <img ng-src="img/{{record.user.id%94}}.jpg">
+            <h2>{{record.user.name}}</h2>
+            <p>充值：{{record.amount}} 元</p>
+            <p>余额：{{record.user.balance}}</p>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
   </ion-content>
 </ion-view>

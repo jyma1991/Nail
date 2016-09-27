@@ -8,7 +8,7 @@ controllersModel.controller('UserDetailCtrl', function ($scope, $stateParams, Us
         };
     }
 
-    $scope.save = function () {
+    $scope.save = function (valid) {
         console.log($scope.user);
         if ($scope.user.id == -1) {
             //新增会员

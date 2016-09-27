@@ -10,18 +10,18 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
   };
 
   $scope.addmoney = function (user, inOut) {
-    $scope.user=user;
-
-    var title ='输入消费金额';
-    if(inOut){
-      title='输入充值金额';
+    $scope.user = user;
+    user.inOut = inOut;
+    var title = '输入消费金额';
+    if (inOut) {
+      title = '输入充值金额';
     }
 
     // An elaborate, custom popup
     var myPopup = $ionicPopup.show({
-      template: '<input type="number" ng-model="user.amount" placeholder="可用金额:'+user.balance+'">',
+      template: '<input type="number" ng-model="user.amount">',
       title: title,
-      subTitle: '',
+      subTitle: '可用金额:' + user.balance,
       scope: $scope,
       buttons: [
         { text: '取消' },
@@ -29,7 +29,7 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
           text: '<b>确认</b>',
           type: 'button-positive',
           onTap: function (e) {
-            if (!$scope.user.amount || $scope.user.amount>$scope.user.balance) {
+            if (!$scope.user.amount || $scope.user.amount > $scope.user.balance) {
               //don't allow the user to close unless he enters wifi password
               e.preventDefault();
             } else {
@@ -39,7 +39,7 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
         }
       ]
     });
-
+    console.log($scope.user);
   }
 
   $scope.add = function () {

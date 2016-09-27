@@ -9,14 +9,16 @@
   </ion-header-bar>
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="user in users" type="item-text-wrap" href="#/tab/users/{{user.id}}">
+      <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="user in users" type="item-text-wrap"
+        href="#/tab/users/{{user.id}}">
         <img ng-src="img/{{user.id%94}}.jpg">
         <h2>{{user.name}}</h2>
-        <p>余额：{{user.balance}} 元&nbsp&nbsp&nbsp&nbsp电话：{{user.mobile}}</p>
+        <p>余额：{{user.balance}} 元</p>
+        <p>电话：{{user.mobile}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <ion-option-button class="button-balanced" ng-click="addmoney(user,1)">
-         充值
+          充值
         </ion-option-button>
         <ion-option-button class="button-assertive" ng-click="addmoney(user,0)">
           消费
