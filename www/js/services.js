@@ -37,7 +37,7 @@ var model = angular.module('starter.services', [])
               user.birthday = resultSet.rows.item(x).birthday;
               user.balance = resultSet.rows.item(x).balance;
               user.avatar = resultSet.rows.item(x).avatar;
-              user.addDate=resultSet.rows.item(x).addDate;
+              user.addDate = resultSet.rows.item(x).addDate;
               user.editDate = resultSet.rows.item(x).editDate;
               users.push(user);
             }
@@ -50,34 +50,37 @@ var model = angular.module('starter.services', [])
         users.splice(users.indexOf(user), 1);
       },
 
+      getbymobile: function (mobile) {
+
+      },
+
       get: function (userId) {
+        userId = parseInt(userId);
         for (var i = 0; i < users.length; i++) {
-          if (users[i].id === parseInt(userId)) {
-            users[i].sum=0;
+          if (users[i].id === userId) {
+            var user = users[i];
+            user.sum = 0;
             //获取user的所有消费记录
             var records = [];
             var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
             db.transaction(function (tx) {
-              var query = "select rid,userId,inDate,inOut,amount from Record where userId= ? order by inDate desc";
+              var query = "select rid,userId,inDate,inOut,amount from Record order by inDate desc";
 
-              tx.executeSql(query, [users[i].id], function (tx, resultSet) {
-                toast.show(resultSet.rows.length);
+              tx.executeSql(query, [], function (tx, resultSet) {
+                //alert(JSON.stringify(resultSet.rows.item(0)));
                 for (var x = 0; x < resultSet.rows.length; x++) {
                   var record = {};
                   record.id = resultSet.rows.item(x).rid;
                   record.inOut = resultSet.rows.item(x).inOut;
                   record.amount = parseInt(resultSet.rows.item(x).amount);
-                  record.inDate = resultSet.rows.item(x).inDate;
+                  record.inDate = new Date(resultSet.rows.item(x).inDate).toLocaleString();
                   records.push(record);
-                  users[i].sum+=record.amount;
+                  user.sum += record.amount;
                 }
-              }, function (tx, error) {
-                toast.show('查询记录出错: ' + error.message);
-                alert('查询记录出错: ' + error.message);
               });
             });
-            users[i].records = records;
-            return users[i];
+            user.records = records;
+            return user;
           }
         }
         return null;
@@ -91,12 +94,10 @@ var model = angular.module('starter.services', [])
           var query = "INSERT INTO Users (name,mobile,birthday,addDate,editDate,balance,avatar) VALUES (?,?,?,?,?,?,?)";
 
           tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), new Date(), parseInt(user.balance), parseInt(user.avatar)], function (tx, res) {
-            var query = "INSERT INTO Record (userId,inDate,inOut,amount) VALUES (?,?,?,?)";
 
-          //第一次加入会员 充值记录
-          tx.executeSql(query, [user.id, new Date(), 1, parseInt(user.balance)]),function (tx, res) {
-            alert(JSON.stringify(res))
-          };
+            var query = "INSERT INTO Record (userId,inDate,inOut,amount) VALUES (?,?,?,?)";
+            //第一次加入会员 充值记录
+            tx.executeSql(query, [res.insertId, new Date(), 1, parseInt(user.balance)])
           });
         });
         return null;
@@ -107,7 +108,7 @@ var model = angular.module('starter.services', [])
         var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
         db.transaction(function (tx) {
           //编辑资料
-          var query = "UPDATE Users set (name,mobile,birthday,editDate,avatar,balance) VALUES (?,?,?,?,?,?) Where uid=" + user.id;
+          var query = "UPDATE Users set (name,mobile,birthday,editDate,avatar,balance) VALUES (?,?,?,?,?,?) Where uid=?";
           //更新金额
           if (user.amount) {
             if (user.inOut) {
@@ -117,22 +118,16 @@ var model = angular.module('starter.services', [])
               user.balance = parseInt(user.balance) - parseInt(user.amount);
             }
           }
-          tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), user.avatar, parseInt(user.balance)], function (tx, res) {
+          tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), user.avatar, parseInt(user.balance),user.id], function (tx, res) {
             if (user.amount) {
               //插入流水
               var query = "INSERT INTO Record (userId,inDate,inOut,amount) VALUES (?,?,?,?)";
 
               tx.executeSql(query, [user.id, new Date(), user.inOut, parseInt(user.amount)]);
             }
-          }, function (tx, error) {
-            toast.show('更新出错: ' + error.message);
-            alert("信息更新出错！" + error.message);
           });
-        }, function (error) {
-          toast.show('transaction error: ' + error.message);
         });
-      }
-
+      },
     };
   });
 

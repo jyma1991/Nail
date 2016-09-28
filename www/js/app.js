@@ -24,7 +24,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
        var db = window.sqlitePlugin.openDatabase({name: 'nail.db', location: 'default'});
        db.transaction(function(tx) {
         tx.executeSql('CREATE TABLE IF NOT EXISTS Users ([uid] INTEGER PRIMARY KEY NOT NULL,name,mobile,birthday,[addDate] DATE,[editDate] DATE,[balance] INTEGER,avatar,extInfo)');
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Record ([rid] INTEGER PRIMARY KEY NOT NULL,userId,[inDate] DATE,inOut,[amount] INTEGER ,ext1)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Record ([rid] INTEGER PRIMARY KEY NOT NULL,[userId] INTEGER,[inDate] DATE,inOut,[amount] INTEGER,ext1)');
 
        });
     });

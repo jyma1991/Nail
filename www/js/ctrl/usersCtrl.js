@@ -29,7 +29,7 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
           text: '<b>确认</b>',
           type: 'button-positive',
           onTap: function (e) {
-            if (!$scope.user.amount || $scope.user.amount > $scope.user.balance) {
+            if (!$scope.user.amount || ($scope.user.amount > $scope.user.balance &&!inOut) ){
               //don't allow the user to close unless he enters wifi password
               e.preventDefault();
             } else {
@@ -39,7 +39,9 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
         }
       ]
     });
-    console.log($scope.user);
+    Users.update($scope.user);
+    $scope.users = Users.all();
+    $state.go($state.current, {}, {reload: true});
   }
 
   $scope.add = function () {
