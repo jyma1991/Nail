@@ -32,6 +32,7 @@
             <img ng-src="img/{{user.id%94}}.jpg">
             <p ng-if="record.inOut">充值：{{record.amount}} 元</p>
             <p ng-if="!record.inOut">消费：{{record.amount}} 元</p>
+            <p ng-if="!record.inOut">类型：{{record.remark}}</p>
             <p>时间：{{record.inDate}}</p>
           </ion-item>
         </ion-list>
