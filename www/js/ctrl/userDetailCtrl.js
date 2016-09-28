@@ -1,10 +1,11 @@
+
 controllersModel.controller('UserDetailCtrl', function ($scope, $stateParams, Users, $state, toast) {
 
     $scope.user = Users.get($stateParams.userId);
     if (!$scope.user) {
         $scope.user = {
             id: -1,
-            birthday: new Date()
+            birthday: new Date().toLocaleDateString()
         };
     }
 
@@ -18,5 +19,24 @@ controllersModel.controller('UserDetailCtrl', function ($scope, $stateParams, Us
             Users.update($scope.user);
         }
         $state.go('tab.users');
+    };
+
+    $scope.nativedatepicker = function () {
+
+        var myNewDate = $scope.user.birthday;
+
+        var options = {
+            date: myNewDate,
+            maxDate: new Date(),
+            androidTheme: 5
+        };
+
+        function onSuccess(date) {
+            //alert('Selected date: ' + date.toLocaleDateString());
+            $scope.user.birthday = date.toLocaleDateString();
+            $state.go($state.current, {}, {reload: true});
+        }
+
+        datePicker.show(options, onSuccess);
     };
 });

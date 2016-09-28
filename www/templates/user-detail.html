@@ -16,15 +16,15 @@
         <span class="input-label">手机</span>
         <input type="tel" name='mobile' placeholder="15890198396" ng-model="user.mobile" ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" ng-required="true" requird>
       </label>
-      <label class="item item-input item-stacked-label">
+      <div class="item item-input item-stacked-label">
         <span class="input-label">生日</span>
-        <input type="date" name='birthday' ng-model="user.birthday" >
-      </label>
+        <input readonly="readonly"  type="text" clase="whiteback" ng-click='nativedatepicker()' ng-model="user.birthday" />
+      </div>
       <label ng-if="user.id==-1" class="item item-input item-stacked-label">
         <span class="input-label">充值金额</span>
         <input type="number" name='blance' placeholder=1000 ng-model="user.balance" ng-required="true" required>
       </label>
-      <button type="button" class="button button-block button-positive" ng-disabled="userInfo.$invalid" ng-click="save()">保存</button>
+      <button type="button" class="button button-outline button-block button-balanced" ng-disabled="userInfo.$invalid" ng-click="save()">保存</button>
     </form>
 
     <div ng-if="user.id!=-1 && user.records && user.records.length>0 && user.sum" class="list card">
