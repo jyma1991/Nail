@@ -82,3 +82,8 @@ Add the following jQuery fragment to handle the click on these input elements:
 参考 https://forum.ionicframework.com/t/how-can-i-have-one-file-per-controller/1269/5
 
 
+调试
+-----------
+ionic run android --livereload --consolelogs      
+
+

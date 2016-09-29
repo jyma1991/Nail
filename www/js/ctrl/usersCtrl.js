@@ -1,8 +1,13 @@
 controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionicPopup, $ionicListDelegate) {
 
-  //$scope.users = Users.all();
+  $scope.users = [];
   $scope.$on("$ionicView.beforeEnter", function (event, data) {
     // handle event
+    $scope.users = Users.all();
+  });
+
+  $scope.$on('sqliteReady', function (event, data) {
+    console.log('fuck User fuck User fuck Userfuck Userfuck User')
     $scope.users = Users.all();
   });
 

@@ -12,7 +12,7 @@
       <link class="button no-animation button-icon icon ion-android-add" ng-click="add()" />
     </div>
   </ion-header-bar>-->
-  <ion-content>
+  <ion-content overflow-scroll="true">
     <ion-list>
       <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="user in users" type="item-text-wrap"
         href="#/tab/users/{{user.id}}">
