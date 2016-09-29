@@ -1,5 +1,6 @@
 controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionicPopup) {
 
+  //$scope.users = Users.all();
   $scope.$on("$ionicView.beforeEnter", function (event, data) {
     // handle event
     $scope.users = Users.all();
@@ -12,14 +13,16 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
   $scope.addmoney = function (user, inOut) {
     $scope.user = user;
     $scope.user.inOut = inOut;
-    var title = '输入消费金额';
-    if (inOut) {
-      title = '输入充值金额';
+    var title = '输入充值金额';
+    var template='<input type="number" ng-model="user.amount">';
+    if (!inOut) {
+      title = '输入消费金额和类型';
+      template='<div class="list"><label class="item item-input"><span class="input-label">金额</span><input type="number" ng-model="user.amount"></label><label class="item item-input"><span class="input-label">类型</span><input ng-model="user.remark" type="text"></label></div>'
     }
 
     // An elaborate, custom popup
     var myPopup = $ionicPopup.show({
-      template: '<input type="number" ng-model="user.amount">',
+      template: template,
       title: title,
       subTitle: '可用金额:' + user.balance,
       scope: $scope,
@@ -33,7 +36,7 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
               //don't allow the user to close unless he enters wifi password
               e.preventDefault();
             } else {
-              return $scope.user.amount;
+              return $scope.user;
             }
           }
         }
@@ -41,11 +44,11 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
     });
 
     myPopup.then(function (res) {
-      $scope.user.amount = parseInt(res);
       //alert(JSON.stringify($scope.user));
       Users.update($scope.user);
-      //$scope.users = Users.all();
-      $state.go($state.current, {}, { reload: true });
+      $scope.users = Users.all();
+      //$state.go($state.current, {}, { reload: true });   
+      //$state.go('tab.user-detail',{userId:$scope.user.id});
     });
 
   }

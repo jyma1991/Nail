@@ -4,27 +4,27 @@
   </ion-header-bar>
   <ion-content class="padding">
     <div ng-if="status.dailyAdds" class="list card">
-      <div class="item item-divider">今日充值：{{status.dailyAdds}}</div>
+      <div class="item item-divider">今日充值：{{status.dailyAdds}} 元</div>
       <div class="item item-body">
         <ion-list>
           <ion-item class="item-remove-animate item-avatar" ng-repeat="record in status.addList" type="item-text-wrap" href="#/tab/users/{{record.user.id}}">
             <img ng-src="img/{{record.user.id%94}}.jpg">
             <h2>{{record.user.name}}</h2>
             <p>充值：{{record.amount}} 元</p>
-            <p>余额：{{record.user.balance}}</p>
+            <p>余额：{{record.user.balance}} 元</p>
           </ion-item>
         </ion-list>
       </div>
     </div>
     <div ng-if="status.dailySub" class="list card">
-      <div class="item item-divider">今日卡扣：{{status.dailySub}}</div>
+      <div class="item item-divider">今日卡扣：{{status.dailySub}} 元</div>
       <div class="item item-body">
         <ion-list>
           <ion-item class="item-remove-animate item-avatar" ng-repeat="record in status.subList" type="item-text-wrap" href="#/tab/users/{{record.user.id}}">
             <img ng-src="img/{{record.user.id%94}}.jpg">
             <h2>{{record.user.name}}</h2>
             <p>消费：{{record.amount}} 元</p>
-            <p>余额：{{record.user.balance}}</p>
+            <p>类型：{{record.remark}}</p>
           </ion-item>
         </ion-list>
       </div>

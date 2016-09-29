@@ -6,19 +6,7 @@ var model = angular.module('starter.services', [])
   .factory('Users', function (toast) {
     // Might use a resource here that returns a JSON array
 
-    var users = [{
-      id: 999,
-      name: '臧莹',
-      mobile: '15890198396',
-      birthday: '1991/01/24',
-      balance: 1000
-    }, {
-        id: 998,
-        name: 'jyma1991',
-        mobile: '15890198396',
-        birthday: '1992/01/02',
-        balance: 1000
-      }];
+    var users = [];
     return {
       all: function () {
         users = [];
@@ -64,7 +52,7 @@ var model = angular.module('starter.services', [])
             var records = [];
             var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
             db.transaction(function (tx) {
-              var query = "select rid,userId,inDate,inOut,amount from Record order by inDate desc";
+              var query = "select rid,userId,inDate,inOut,amount,remark from Record order by inDate desc";
 
               tx.executeSql(query, [], function (tx, resultSet) {
                 //alert(JSON.stringify(resultSet.rows.item(0)));
@@ -72,10 +60,13 @@ var model = angular.module('starter.services', [])
                   var record = {};
                   record.id = resultSet.rows.item(x).rid;
                   record.inOut = resultSet.rows.item(x).inOut;
-                  record.amount = parseInt(resultSet.rows.item(x).amount);
+                  record.amount = resultSet.rows.item(x).amount;
                   record.inDate = new Date(resultSet.rows.item(x).inDate).toLocaleString();
+                  record.remark = resultSet.rows.item(x).remark;
                   records.push(record);
-                  user.sum += record.amount;
+                  if (record.inOut) {
+                    user.sum += record.amount;
+                  }
                 }
               });
             });
@@ -95,9 +86,9 @@ var model = angular.module('starter.services', [])
 
           tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), new Date(), parseInt(user.balance), parseInt(user.avatar)], function (tx, res) {
 
-            var query = "INSERT INTO Record (userId,inDate,inOut,amount) VALUES (?,?,?,?)";
+            var query = "INSERT INTO Record (userId,inDate,inOut,amount,remark) VALUES (?,?,?,?,?)";
             //第一次加入会员 充值记录
-            tx.executeSql(query, [res.insertId, new Date(), 1, parseInt(user.balance)])
+            tx.executeSql(query, [res.insertId, new Date(), 1, parseInt(user.balance), '首次充值'])
           });
         });
         return null;
@@ -108,7 +99,7 @@ var model = angular.module('starter.services', [])
         var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
         db.transaction(function (tx) {
           //编辑资料
-          var query = "UPDATE Users set (name,mobile,birthday,editDate,avatar,balance) VALUES (?,?,?,?,?,?) Where uid=?";
+          var query = "UPDATE Users set name=?,mobile=?,birthday=?,editDate=?,avatar=?,balance=? Where uid=?";
           //更新金额
           if (user.amount) {
             if (user.inOut) {
@@ -118,12 +109,12 @@ var model = angular.module('starter.services', [])
               user.balance = parseInt(user.balance) - parseInt(user.amount);
             }
           }
-          tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), user.avatar, parseInt(user.balance),user.id], function (tx, res) {
+          tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), user.avatar, user.balance, user.id], function (tx, res) {
             if (user.amount) {
               //插入流水
-              var query = "INSERT INTO Record (userId,inDate,inOut,amount) VALUES (?,?,?,?)";
+              var query = "INSERT INTO Record (userId,inDate,inOut,amount,remark) VALUES (?,?,?,?,?)";
 
-              tx.executeSql(query, [user.id, new Date(), user.inOut, parseInt(user.amount)]);
+              tx.executeSql(query, [user.id, new Date(), user.inOut, user.amount, user.remark]);
             }
           });
         });
@@ -134,58 +125,59 @@ var model = angular.module('starter.services', [])
 /********************************************************************************
  Dash
  ********************************************************************************/
-model.factory('dash', function (toast, $cordovaSQLite) {
-  var addList = [];
-  var subList = [];
-  var dailyAdds = 0;
-  var dailySub = 0;
+model.factory('dash', function (toast) {
   var status = {
-    subList: subList,
-    addList: addList,
-    dailyAdds: dailyAdds,
-    dailySub: dailySub
+    subList: [],
+    addList: [],
+    dailyAdds: 0,
+    dailySub: 0
   };
   return {
     all: function () {
-      addList = [];
-      subList = [];
-      dailyAdds = 0;
-      dailySub = 0;
+      status = {
+        subList: [],
+        addList: [],
+        dailyAdds: 0,
+        dailySub: 0
+      };
       var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
 
       db.transaction(function (tx) {
-        var query = "select * from ((select rid,userId,inDate,inOut,amount from Record where inDate>datetime('now')) r left join Users on r.userId = Users.uid) order by inDate desc";
+        var query = "select * from ((select rid,userId,inDate,inOut,amount,remark from Record where inDate>datetime('now')) r left join Users on r.userId = Users.uid) order by inDate desc";
 
         tx.executeSql(query, [], function (tx, resultSet) {
-          toast.show("结果: " + resultSet.rows.length);
+
           for (var x = 0; x < resultSet.rows.length; x++) {
             var record = {};
             var user = {};
-            record.id = resultSet.rows.item(x).rid;
+            //alert(JSON.stringify(resultSet.rows.item(x)));
             user.id = resultSet.rows.item(x).userId;
             user.name = resultSet.rows.item(x).name;
             user.mobile = resultSet.rows.item(x).mobile;
             user.birthday = resultSet.rows.item(x).birthday;
-            user.balance = parseInt(resultSet.rows.item(x).balance);
-            record.amount = parseInt(resultSet.rows.item(x).amount);
-            user.inOut = resultSet.rows.item(x).inOut;
-            record.inDate = resultSet.rows.item(x).inDate;
+            user.balance = resultSet.rows.item(x).balance;
             user.avatar = resultSet.rows.item(x).avatar;
+            user.addDate = new Date(resultSet.rows.item(x).addDate).toLocaleDateString();
+
+            record.id = resultSet.rows.item(x).rid;
+            record.amount = resultSet.rows.item(x).amount;
+            record.inOut = resultSet.rows.item(x).inOut;
+            record.inDate = new Date(resultSet.rows.item(x).inDate).toLocaleDateString();
+            record.remark = resultSet.rows.item(x).remark;
             record.user = user;
-            if (user.inOut) {
-              dailyAdds += parseInt(record.amount);
-              addList.push(record);
+            if (record.inOut) {
+              status.dailyAdds = status.dailyAdds + record.amount;
+              status.addList.push(record);
+              //alert(record.inOut +"&&"+dailyAdds+JSON.stringify(addList));
             } else {
-              dailySub += parseInt(record.amount);
-              subList.push(record);
+              status.dailySub = status.dailySub + record.amount;
+              status.subList.push(record);
+              //alert(record.inOut +"&&"+dailySub+JSON.stringify(subList));
             }
           }
-        }, function (tx, error) {
-          toast.show('SELECT error: ' + error.message);
-          alert('SELECT error: ' + error.message);
         });
       });
-      alert(JSON.stringify(status));
+      //alert(JSON.stringify(status));
       return status;
     }
   }

@@ -54,23 +54,24 @@ cordova plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker.
 Add a class="nativedatepicker" to your element for which you want the native datepicker
 Add the following jQuery fragment to handle the click on these input elements:
 '''javascript
-    $('.nativedatepicker').focus(function(event) {
-        var currentField = $(this);
-        var myNewDate = Date.parse(currentField.val()) || new Date();
+    $scope.nativedatepicker = function () {
 
-        // Same handling for iPhone and Android
-        window.plugins.datePicker.show({
-            date : myNewDate,
-            mode : 'date', // date or time or blank for both
-            allowOldDates : true
-        }, function(returnDate) {
-            var newDate = new Date(returnDate);
-            currentField.val(newDate.toString("dd/MMM/yyyy"));
+        var myNewDate = $scope.user.birthday;
 
-            // This fixes the problem you mention at the bottom of this script with it not working a second/third time around, because it is in focus.
-            currentField.blur();
-        });
-    });
+        var options = {
+            date: myNewDate,
+            maxDate: new Date(),
+            androidTheme: 5
+        };
+
+        function onSuccess(date) {
+            //alert('Selected date: ' + date.toLocaleDateString());
+            $scope.user.birthday = date.toLocaleDateString();
+            $state.go($state.current, {}, {reload: true});
+        }
+
+        datePicker.show(options, onSuccess);
+    };
 '''
 
 
