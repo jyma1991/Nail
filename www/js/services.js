@@ -52,9 +52,9 @@ var model = angular.module('starter.services', [])
             var records = [];
             var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
             db.transaction(function (tx) {
-              var query = "select rid,userId,inDate,inOut,amount,remark from Record order by inDate desc";
+              var query = "select rid,userId,inDate,inOut,amount,remark from Record where userId=? order by inDate desc";
 
-              tx.executeSql(query, [], function (tx, resultSet) {
+              tx.executeSql(query, [userId], function (tx, resultSet) {
                 //alert(JSON.stringify(resultSet.rows.item(0)));
                 for (var x = 0; x < resultSet.rows.length; x++) {
                   var record = {};
