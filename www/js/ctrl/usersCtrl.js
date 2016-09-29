@@ -11,7 +11,7 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
 
   $scope.addmoney = function (user, inOut) {
     $scope.user = user;
-    user.inOut = inOut;
+    $scope.user.inOut = inOut;
     var title = '输入消费金额';
     if (inOut) {
       title = '输入充值金额';
@@ -29,7 +29,7 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
           text: '<b>确认</b>',
           type: 'button-positive',
           onTap: function (e) {
-            if (!$scope.user.amount || ($scope.user.amount > $scope.user.balance &&!inOut) ){
+            if (!$scope.user.amount || ($scope.user.amount > $scope.user.balance && !inOut)) {
               //don't allow the user to close unless he enters wifi password
               e.preventDefault();
             } else {
@@ -39,9 +39,15 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
         }
       ]
     });
-    Users.update($scope.user);
-    $scope.users = Users.all();
-    $state.go($state.current, {}, {reload: true});
+
+    myPopup.then(function (res) {
+      $scope.user.amount = parseInt(res);
+      //alert(JSON.stringify($scope.user));
+      Users.update($scope.user);
+      //$scope.users = Users.all();
+      $state.go($state.current, {}, { reload: true });
+    });
+
   }
 
   $scope.add = function () {
