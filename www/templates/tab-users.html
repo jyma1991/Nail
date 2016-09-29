@@ -1,12 +1,17 @@
-<ion-view hide-nav-bar="true">
-  <ion-header-bar align-title="left" class="bar-light">
+<ion-view class="h1 title" title='705美甲'>
+      <ion-nav-buttons side="right">
+        <button class="button no-animation button-icon icon ion-ios-search">
+          </button>
+      <button class="button no-animation button-icon icon ion-android-add" ng-click="add()"></button>
+    </ion-nav-buttons>
+  <!--<ion-header-bar align-title="left" class="bar-light">
     <div class="h1 title">705美甲</div>
     <div class="buttons">
       <button class="button no-animation button-icon icon ion-ios-search">
           </button>
       <link class="button no-animation button-icon icon ion-android-add" ng-click="add()" />
     </div>
-  </ion-header-bar>
+  </ion-header-bar>-->
   <ion-content>
     <ion-list>
       <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="user in users" type="item-text-wrap"

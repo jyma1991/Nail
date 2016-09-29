@@ -18,9 +18,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
 
 
     document.addEventListener('deviceready', function() {
-      window.sqlitePlugin.echoTest(function() {
-        //window.plugins.toast.show("OK", 'long', 'bottom')
-      });
        var db = window.sqlitePlugin.openDatabase({name: 'nail.db', location: 'default'});
        db.transaction(function(tx) {
         tx.executeSql('CREATE TABLE IF NOT EXISTS Users ([uid] INTEGER PRIMARY KEY NOT NULL,name,mobile,birthday,[addDate] DATE,[editDate] DATE,[balance] INTEGER,avatar,extInfo)');
@@ -71,7 +68,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   })
 
   .state('tab.users', {
-      url: '/users',
+      parent:'tab',
+      url: '^/users',
       views: {
         'tab-users': {
           templateUrl: 'templates/tab-users.html',
