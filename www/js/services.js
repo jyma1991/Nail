@@ -3,7 +3,7 @@ var model = angular.module('starter.services', [])
   /********************************************************************************
    Users
    ********************************************************************************/
-  .factory('Users', function (toast) {
+  .factory('Users', function (toast, $window) {
     // Might use a resource here that returns a JSON array
 
     var users = [];
@@ -29,8 +29,13 @@ var model = angular.module('starter.services', [])
               user.editDate = resultSet.rows.item(x).editDate;
               users.push(user);
             }
-          });
+            $window.localStorage.users = JSON.stringify(users);
+            console.log($window.localStorage.users);
+
+          })
         });
+        // $window.localStorage.users=JSON.stringify(users);
+        // console.log(users.length+'user:'+$window.localStorage.users);
         return users;
       },
 
@@ -44,6 +49,9 @@ var model = angular.module('starter.services', [])
 
       get: function (userId) {
         userId = parseInt(userId);
+        if ($window.localStorage.dbReady != "true") {
+          users = JSON.parse($window.localStorage.users);
+        }
         for (var i = 0; i < users.length; i++) {
           if (users[i].id === userId) {
             var user = users[i];
@@ -125,7 +133,7 @@ var model = angular.module('starter.services', [])
 /********************************************************************************
  Dash
  ********************************************************************************/
-model.factory('dash', function (toast) {
+model.factory('dash', function (toast, $window) {
   var status = {
     subList: [],
     addList: [],
@@ -157,12 +165,12 @@ model.factory('dash', function (toast) {
             user.birthday = resultSet.rows.item(x).birthday;
             user.balance = resultSet.rows.item(x).balance;
             user.avatar = resultSet.rows.item(x).avatar;
-            user.addDate = new Date(resultSet.rows.item(x).addDate).toLocaleDateString();
+            user.addDate = new Date(resultSet.rows.item(x).addDate).toLocaleString();
 
             record.id = resultSet.rows.item(x).rid;
             record.amount = resultSet.rows.item(x).amount;
             record.inOut = resultSet.rows.item(x).inOut;
-            record.inDate = new Date(resultSet.rows.item(x).inDate).toLocaleDateString();
+            record.inDate = new Date(resultSet.rows.item(x).inDate).toLocaleString();
             record.remark = resultSet.rows.item(x).remark;
             record.user = user;
             if (record.inOut) {
@@ -175,9 +183,12 @@ model.factory('dash', function (toast) {
               //alert(record.inOut +"&&"+dailySub+JSON.stringify(subList));
             }
           }
+          $window.localStorage.status = JSON.stringify(status);
+          console.log('status:' + $window.localStorage.status);
         });
       });
       //alert(JSON.stringify(status));
+
       return status;
     }
   }

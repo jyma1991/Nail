@@ -1,16 +1,14 @@
-controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionicPopup, $ionicListDelegate) {
+controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionicPopup, $ionicListDelegate, $window) {
 
-  $scope.users = [];
   $scope.$on("$ionicView.beforeEnter", function (event, data) {
-    // handle event
-    $scope.users = Users.all();
+    if ($window.localStorage.dbReady=="true") {
+      console.log('true:'+$window.localStorage.dbReady)
+      $scope.users = Users.all();
+    }else{
+      console.log('false:'+$window.localStorage.dbReady)
+      $scope.users = JSON.parse($window.localStorage.users);
+    }
   });
-
-  $scope.$on('sqliteReady', function (event, data) {
-    console.log('fuck User fuck User fuck Userfuck Userfuck User')
-    $scope.users = Users.all();
-  });
-
 
   $scope.remove = function (user) {
     Users.remove(user);
@@ -54,10 +52,8 @@ controllersModel.controller('UsersCtrl', function ($scope, Users, $state, $ionic
       //alert(JSON.stringify($scope.user));
       if (res.ok) {
         Users.update($scope.user);
-
-        $scope.users = Users.all();
-        //$state.go('tab.user-detail',{"userId":$scope.user.id});
-        //$state.go($state.current, {}, { reload: true });  
+        $state.go('tab.user-detail',{"userId":$scope.user.id});
+        //$state.go($state.current, {}, { reload: false });  
       }
       else {
       }

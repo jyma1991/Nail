@@ -14,7 +14,7 @@
   </ion-header-bar>-->
   <ion-content overflow-scroll="true">
     <ion-list>
-      <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="user in users" type="item-text-wrap"
+      <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="user in users track by $index" type="item-text-wrap"
         href="#/tab/users/{{user.id}}">
         <img ng-src="img/{{user.id%94}}.jpg">
         <h2>{{user.name}}</h2>

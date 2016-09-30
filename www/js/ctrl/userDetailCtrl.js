@@ -1,7 +1,6 @@
 
 controllersModel.controller('UserDetailCtrl', function ($scope, $stateParams, Users, $state, toast) {
-
-    $scope.user = Users.get($stateParams.userId);
+    $scope.user = Users.get(parseInt($stateParams.userId));
     if (!$scope.user) {
         $scope.user = {
             id: -1,
@@ -9,8 +8,8 @@ controllersModel.controller('UserDetailCtrl', function ($scope, $stateParams, Us
         };
     }
 
-    $scope.save = function (valid) {
-        console.log($scope.user);
+    $scope.save = function () {
+        // console.log($scope.user);
         if ($scope.user.id == -1) {
             //新增会员
             Users.add($scope.user);

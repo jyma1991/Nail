@@ -13,20 +13,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.tabs.position('bottom');
   })
 
-  .run(function ($ionicPlatform,$rootScope) {
-
+  .run(function ($ionicPlatform,$rootScope,$window) {
+    $window.localStorage.dbReady=false
     $ionicPlatform.ready(function () {
-
       document.addEventListener('deviceready', function () {
-        window.sqlitePlugin.echoTest(function () {
-          console.log('ECHO test OK');
-        });
+        
+        // window.sqlitePlugin.echoTest(function () {
+        //   console.log('ECHO test OK');
+        // });
         var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
+        $window.localStorage.dbReady=true;
         db.transaction(function (tx) {
           tx.executeSql('CREATE TABLE IF NOT EXISTS Users ([uid] INTEGER PRIMARY KEY NOT NULL,name,mobile,birthday,[addDate] DATE,[editDate] DATE,[balance] INTEGER,avatar,extInfo)');
           tx.executeSql('CREATE TABLE IF NOT EXISTS Record ([rid] INTEGER PRIMARY KEY NOT NULL,[userId] INTEGER,[inDate] DATE,inOut,[amount] INTEGER,remark,ext1)');
-
-          $rootScope.$broadcast('sqliteReady');          
         });
       });
 
