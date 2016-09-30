@@ -69,7 +69,7 @@ var model = angular.module('starter.services', [])
                   record.id = resultSet.rows.item(x).rid;
                   record.inOut = resultSet.rows.item(x).inOut;
                   record.amount = resultSet.rows.item(x).amount;
-                  record.inDate = new Date(resultSet.rows.item(x).inDate).toLocaleString();
+                  record.inDate = resultSet.rows.item(x).inDate;
                   record.remark = resultSet.rows.item(x).remark;
                   records.push(record);
                   if (record.inOut) {
@@ -90,13 +90,13 @@ var model = angular.module('starter.services', [])
         var db = window.sqlitePlugin.openDatabase({ name: 'nail.db', location: 'default' });
         //开启事务
         db.transaction(function (tx) {
-          var query = "INSERT INTO Users (name,mobile,birthday,addDate,editDate,balance,avatar) VALUES (?,?,?,?,?,?,?)";
+          var query = "INSERT INTO Users (name,mobile,birthday,editDate,balance,avatar) VALUES (?,?,?,datetime('now','localtime'),?,?)";
 
-          tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), new Date(), parseInt(user.balance), parseInt(user.avatar)], function (tx, res) {
+          tx.executeSql(query, [user.name, user.mobile, user.birthday, parseInt(user.balance), parseInt(user.avatar)], function (tx, res) {
 
-            var query = "INSERT INTO Record (userId,inDate,inOut,amount,remark) VALUES (?,?,?,?,?)";
+            var query = "INSERT INTO Record (userId,inOut,amount,remark) VALUES (?,?,?,?)";
             //第一次加入会员 充值记录
-            tx.executeSql(query, [res.insertId, new Date(), 1, parseInt(user.balance), '首次充值'])
+            tx.executeSql(query, [res.insertId, 1, parseInt(user.balance), '首次充值'])
           });
         });
         return null;
@@ -120,9 +120,9 @@ var model = angular.module('starter.services', [])
           tx.executeSql(query, [user.name, user.mobile, user.birthday, new Date(), user.avatar, user.balance, user.id], function (tx, res) {
             if (user.amount) {
               //插入流水
-              var query = "INSERT INTO Record (userId,inDate,inOut,amount,remark) VALUES (?,?,?,?,?)";
+              var query = "INSERT INTO Record (userId,inOut,amount,remark) VALUES (?,?,?,?)";
 
-              tx.executeSql(query, [user.id, new Date(), user.inOut, user.amount, user.remark]);
+              tx.executeSql(query, [user.id, user.inOut, user.amount, user.remark]);
             }
           });
         });
@@ -165,12 +165,12 @@ model.factory('dash', function (toast, $window) {
             user.birthday = resultSet.rows.item(x).birthday;
             user.balance = resultSet.rows.item(x).balance;
             user.avatar = resultSet.rows.item(x).avatar;
-            user.addDate = new Date(resultSet.rows.item(x).addDate).toLocaleString();
+            user.addDate = resultSet.rows.item(x).addDate;
 
             record.id = resultSet.rows.item(x).rid;
             record.amount = resultSet.rows.item(x).amount;
             record.inOut = resultSet.rows.item(x).inOut;
-            record.inDate = new Date(resultSet.rows.item(x).inDate).toLocaleString();
+            record.inDate = resultSet.rows.item(x).inDate;
             record.remark = resultSet.rows.item(x).remark;
             record.user = user;
             if (record.inOut) {

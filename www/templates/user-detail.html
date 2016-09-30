@@ -25,7 +25,7 @@
     </form>
 
     <div ng-if="user.id!=-1 && user.records && user.records.length>0 && user.sum" class="list card">
-      <div class="item item-divider">充值总计:{{user.sum}} 元</div>
+      <div class="item item-divider">充值总计:{{user.sum}} 元 余额：{{user.balance}} 元</div>
       <div class="item item-body">
         <ion-list>
           <ion-item class="item-remove-animate item-avatar" ng-repeat="record in user.records" type="item-text-wrap">
